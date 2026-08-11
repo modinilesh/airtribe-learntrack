@@ -1,19 +1,29 @@
-package entity;
+package com.airtribe.learntrack.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Enrollment {
 
     private Integer id;
     private Integer studentId;
     private Integer courseId;
-    private Date enrollmentDate;
+    private LocalDate enrollmentDate;
     private Status status;
 
     public Enrollment() {
+        this.status = Status.ACTIVE;
     }
 
-    public Enrollment(Integer studentId, Integer courseId, Date enrollmentDate) {
+    public Enrollment(Integer studentId, Integer courseId, LocalDate enrollmentDate) {
+        if (studentId == null) {
+            throw new IllegalArgumentException("Student ID cannot be null.");
+        }
+        if (courseId == null) {
+            throw new IllegalArgumentException("Course ID cannot be null.");
+        }
+        if (enrollmentDate == null) {
+            throw new IllegalArgumentException("Enrollment date cannot be null.");
+        }
         this.studentId = studentId;
         this.courseId = courseId;
         this.enrollmentDate = enrollmentDate;
@@ -24,7 +34,17 @@ public class Enrollment {
         return id;
     }
 
+    /**
+     * ID may be assigned once (typically by the service via IdGenerator).
+     * Subsequent changes are rejected to avoid broken lookups.
+     */
     public void setId(Integer id) {
+        if (this.id != null) {
+            throw new IllegalStateException("ID is already assigned and cannot be changed.");
+        }
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null.");
+        }
         this.id = id;
     }
 
@@ -44,11 +64,11 @@ public class Enrollment {
         this.courseId = courseId;
     }
 
-    public Date getEnrollmentDate() {
+    public LocalDate getEnrollmentDate() {
         return enrollmentDate;
     }
 
-    public void setEnrollmentDate(Date enrollmentDate) {
+    public void setEnrollmentDate(LocalDate enrollmentDate) {
         this.enrollmentDate = enrollmentDate;
     }
 
@@ -57,6 +77,9 @@ public class Enrollment {
     }
 
     public void setStatus(Status status) {
+        if (status == null) {
+            throw new IllegalArgumentException("Status cannot be null.");
+        }
         this.status = status;
     }
 

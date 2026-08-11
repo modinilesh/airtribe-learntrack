@@ -1,4 +1,4 @@
-package entity;
+package com.airtribe.learntrack.entity;
 
 public class Person {
 
@@ -21,12 +21,21 @@ public class Person {
         this.email = email;
     }
 
-
     public Integer getId() {
         return id;
     }
 
+    /**
+     * ID may be assigned once (typically by the service via IdGenerator).
+     * Subsequent changes are rejected to avoid broken lookups.
+     */
     public void setId(Integer id) {
+        if (this.id != null) {
+            throw new IllegalStateException("ID is already assigned and cannot be changed.");
+        }
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null.");
+        }
         this.id = id;
     }
 

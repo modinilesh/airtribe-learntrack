@@ -1,4 +1,4 @@
-package entity;
+package com.airtribe.learntrack.entity;
 
 public enum Status {
 

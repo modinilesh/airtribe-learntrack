@@ -1,10 +1,14 @@
-package util;
+package com.airtribe.learntrack.util;
 
-public class IdGenerator {
+public final class IdGenerator {
 
     private static int studentIdCounter = 0;
     private static int courseIdCounter = 0;
     private static int enrollmentIdCounter = 0;
+
+    private IdGenerator() {
+        // Prevent instantiation — use static methods only.
+    }
 
     public static int getNextStudentId() {
         return ++studentIdCounter;

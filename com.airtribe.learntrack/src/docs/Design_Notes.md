@@ -1,5 +1,13 @@
 ## Design Notes
 
+### Package structure
+
+```
+All application classes live under the base package `com.airtribe.learntrack`
+with sub-packages: `entity`, `service`, `exception`, `util`, and `ui`.
+This matches the folder layout under `src/com/airtribe/learntrack/`.
+```
+
 ### Why ArrayList instead of a plain array?
 
 ```

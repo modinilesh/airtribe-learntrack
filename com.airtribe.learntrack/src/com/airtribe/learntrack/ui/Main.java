@@ -1,15 +1,15 @@
-package ui;
+package com.airtribe.learntrack.ui;
 
-import entity.Course;
-import entity.Enrollment;
-import entity.Status;
-import entity.Student;
-import exception.EntityNotFoundException;
-import exception.InvalidInputException;
-import service.CourseService;
-import service.EnrollmentService;
-import service.StudentService;
-import util.InputValidator;
+import com.airtribe.learntrack.entity.Course;
+import com.airtribe.learntrack.entity.Enrollment;
+import com.airtribe.learntrack.entity.Status;
+import com.airtribe.learntrack.entity.Student;
+import com.airtribe.learntrack.exception.EntityNotFoundException;
+import com.airtribe.learntrack.exception.InvalidInputException;
+import com.airtribe.learntrack.service.CourseService;
+import com.airtribe.learntrack.service.EnrollmentService;
+import com.airtribe.learntrack.service.StudentService;
+import com.airtribe.learntrack.util.InputValidator;
 
 import java.util.List;
 import java.util.Scanner;
@@ -81,6 +81,9 @@ public class Main {
                         searchStudentById();
                         break;
                     case 4:
+                        updateStudent();
+                        break;
+                    case 5:
                         deactivateStudent();
                         break;
                     case 0:
@@ -101,7 +104,8 @@ public class Main {
         System.out.println("1. Add new student");
         System.out.println("2. View all students");
         System.out.println("3. Search student by ID");
-        System.out.println("4. Deactivate a student");
+        System.out.println("4. Update a student");
+        System.out.println("5. Deactivate / remove a student");
         System.out.println("0. Back to main menu");
         System.out.print("Enter your choice: ");
     }
@@ -139,10 +143,26 @@ public class Main {
         System.out.println(student);
     }
 
+    private static void updateStudent() throws InvalidInputException, EntityNotFoundException {
+        System.out.print("Enter student ID to update: ");
+        int studentId = InputValidator.parseInt(scanner.nextLine());
+        System.out.print("Enter first name: ");
+        String firstName = scanner.nextLine();
+        System.out.print("Enter last name: ");
+        String lastName = scanner.nextLine();
+        System.out.print("Enter email: ");
+        String email = scanner.nextLine();
+        System.out.print("Enter batch: ");
+        String batch = scanner.nextLine();
+
+        Student student = studentService.updateStudent(studentId, firstName, lastName, email, batch);
+        System.out.println("Student updated successfully: " + student);
+    }
+
     private static void deactivateStudent() throws InvalidInputException, EntityNotFoundException {
         System.out.print("Enter student ID to deactivate: ");
         int studentId = InputValidator.parseInt(scanner.nextLine());
-        Student student = studentService.deactivateStudent(studentId);
+        Student student = studentService.removeStudent(studentId);
         System.out.println("Student deactivated successfully: " + student);
     }
 
@@ -194,7 +214,7 @@ public class Main {
         System.out.print("Enter description: ");
         String description = scanner.nextLine();
         System.out.print("Enter duration in weeks: ");
-        String durationInWeeks = scanner.nextLine();
+        int durationInWeeks = InputValidator.requirePositiveInt(scanner.nextLine(), "Duration in weeks");
 
         Course course = courseService.addCourse(courseName, description, durationInWeeks);
         System.out.println("Course added successfully: " + course);
@@ -281,6 +301,7 @@ public class Main {
     private static void viewEnrollmentsForStudent() throws InvalidInputException, EntityNotFoundException {
         System.out.print("Enter student ID: ");
         int studentId = InputValidator.parseInt(scanner.nextLine());
+        // Service validates that the student exists before returning enrollments.
         List<Enrollment> enrollments = enrollmentService.getEnrollmentsByStudentId(studentId);
         if (enrollments.isEmpty()) {
             System.out.println("No enrollments found for student ID " + studentId + ".");

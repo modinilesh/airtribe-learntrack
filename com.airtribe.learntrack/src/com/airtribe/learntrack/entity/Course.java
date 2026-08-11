@@ -1,17 +1,27 @@
-package entity;
+package com.airtribe.learntrack.entity;
 
 public class Course {
 
     private Integer id;
     private String courseName;
     private String description;
-    private String durationInWeeks;
+    private Integer durationInWeeks;
     private boolean active;
 
     public Course() {
+        this.active = true;
     }
 
-    public Course(String courseName, String description, String durationInWeeks) {
+    public Course(String courseName, String description, Integer durationInWeeks) {
+        if (courseName == null || courseName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Course name cannot be empty.");
+        }
+        if (description == null || description.trim().isEmpty()) {
+            throw new IllegalArgumentException("Description cannot be empty.");
+        }
+        if (durationInWeeks == null || durationInWeeks <= 0) {
+            throw new IllegalArgumentException("Duration in weeks must be a positive integer.");
+        }
         this.courseName = courseName;
         this.description = description;
         this.durationInWeeks = durationInWeeks;
@@ -22,7 +32,17 @@ public class Course {
         return id;
     }
 
+    /**
+     * ID may be assigned once (typically by the service via IdGenerator).
+     * Subsequent changes are rejected to avoid broken lookups.
+     */
     public void setId(Integer id) {
+        if (this.id != null) {
+            throw new IllegalStateException("ID is already assigned and cannot be changed.");
+        }
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null.");
+        }
         this.id = id;
     }
 
@@ -42,11 +62,11 @@ public class Course {
         this.description = description;
     }
 
-    public String getDurationInWeeks() {
+    public Integer getDurationInWeeks() {
         return durationInWeeks;
     }
 
-    public void setDurationInWeeks(String durationInWeeks) {
+    public void setDurationInWeeks(Integer durationInWeeks) {
         this.durationInWeeks = durationInWeeks;
     }
 
@@ -63,7 +83,7 @@ public class Course {
         return "Course{id=" + id
                 + ", courseName='" + courseName + '\''
                 + ", description='" + description + '\''
-                + ", durationInWeeks='" + durationInWeeks + '\''
+                + ", durationInWeeks=" + durationInWeeks
                 + ", active=" + active + '}';
     }
 }

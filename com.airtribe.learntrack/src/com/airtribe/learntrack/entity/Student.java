@@ -1,4 +1,4 @@
-package entity;
+package com.airtribe.learntrack.entity;
 
 public class Student extends Person {
 
@@ -6,6 +6,7 @@ public class Student extends Person {
     private boolean active;
 
     public Student() {
+        this.active = true;
     }
 
     public Student(String firstName, String lastName) {
@@ -13,8 +14,10 @@ public class Student extends Person {
         this.active = true;
     }
 
-    public Student(String firstName, String lastName, String email) {
-        super(firstName, lastName, email);
+    /** Creation without email (constructor overloading). */
+    public Student(String firstName, String lastName, String batch) {
+        super(firstName, lastName);
+        this.batch = batch;
         this.active = true;
     }
 
@@ -42,7 +45,7 @@ public class Student extends Person {
 
     @Override
     public String getDisplayName() {
-        return "Student: " + getFirstName() + " " + getLastName();
+        return "Student: " + super.getDisplayName();
     }
 
     @Override

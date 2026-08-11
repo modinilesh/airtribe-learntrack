@@ -1,0 +1,6 @@
+*.class
+com.airtribe.learntrack/out/
+com.airtribe.learntrack/bin/
+out/
+.idea
+airtribe-learntrack.iml
